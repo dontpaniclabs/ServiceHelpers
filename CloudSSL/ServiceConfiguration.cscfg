@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceConfiguration serviceName="CloudSSL" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="1" osVersion="*" schemaVersion="2012-05.1.7">
+  <Role name="CloudSSLHost">
+    <Instances count="2" />
+    <ConfigurationSettings>
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.Enabled" value="true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountUsername" value="dontpanic" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountEncryptedPassword" value="MIIBnQYJKoZIhvcNAQcDoIIBjjCCAYoCAQAxggFOMIIBSgIBADAyMB4xHDAaBgNVBAMME1dpbmRvd3MgQXp1cmUgVG9vbHMCEE4VwVH7QrWyQGl1ylir6pcwDQYJKoZIhvcNAQEBBQAEggEABO60XdcC+4Aby6LwhW7eeRp/xrkLDSo3o9WXOfdEpyCVS1Q9tTtB9urXOUBVSu9QzLUtL14IVl30yQ2VMaB4ceOYcy0vP0rU01lzqc73JE3AxnwDeHm/DKXRI0Mv/GZTFLWGOcT2zyujIKr20OBMuI/jPa1Ii9LrgUmU9tLGsAZKVs+z2KhgQQ42LmhYWmxoBxuddsV56da+Qguso7Eu/uK/LMuOcfY7CguwgvTfNzGm+lEwvmrG6gfgEf9KZ0fSAgzi13b0Ml81HEPAKhGSL1IkEuiERPZZAEf3bps05zLMPZPxRzDHWyF+FYdIMeze9z3G1QvwFwfJvvSeNYCzrzAzBgkqhkiG9w0BBwEwFAYIKoZIhvcNAwcECC58Mu2mky62gBD8eyo7akU0QK3zpccW/MrD" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteAccess.AccountExpiration" value="2011-12-19T23:59:59.0000000-06:00" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.Enabled" value="true" />
+    </ConfigurationSettings>
+    <Certificates>
+      <Certificate name="RawTcpServiceCert1" thumbprint="7116667BBBF57D52FF51D24B4028971DEA303EB3" thumbprintAlgorithm="sha1" />
+      <Certificate name="Microsoft.WindowsAzure.Plugins.RemoteAccess.PasswordEncryption" thumbprint="679297C79F4DBFC4C151B2DF924266820963FC50" thumbprintAlgorithm="sha1" />
+    </Certificates>
+  </Role>
+</ServiceConfiguration>

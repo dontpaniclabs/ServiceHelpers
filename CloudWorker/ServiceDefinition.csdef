@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ServiceDefinition name="CloudWorker" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition" schemaVersion="2012-05.1.7">
+  <WorkerRole name="WorkerRole1" vmsize="ExtraSmall">
+    <Imports>
+      <Import moduleName="Diagnostics" />
+    </Imports>
+    <Endpoints>
+      <InputEndpoint name="Services" protocol="http" port="10000" />
+    </Endpoints>
+    <Certificates>
+      <Certificate name="RawTcpServiceCert1" storeLocation="LocalMachine" storeName="My" />
+      <Certificate name="RawTcpServiceCert1" storeLocation="LocalMachine" storeName="TrustedPeople" />
+      <Certificate name="RawTcpClientCert1" storeLocation="LocalMachine" storeName="My" />
+      <Certificate name="RawTcpClientCert1" storeLocation="LocalMachine" storeName="TrustedPeople" />
+    </Certificates>
+    <Startup>
+      <Task commandLine="OpenPort.exe" executionContext="elevated" taskType="simple"></Task>
+    </Startup>
+  </WorkerRole>
+</ServiceDefinition>
