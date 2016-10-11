@@ -101,6 +101,7 @@
     <Compile Include="Security\CertHelper.cs" />
     <Compile Include="Security\ManualServiceFactory.cs" />
     <Compile Include="Security\PublicService.cs" />
+    <Compile Include="Security\SSLWithWindowsAuth.cs" />
     <Compile Include="Security\SSLOnly.cs" />
     <Compile Include="ServiceError.cs" />
     <Compile Include="ProxyFactory.cs" />

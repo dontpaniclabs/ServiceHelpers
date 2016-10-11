@@ -13,7 +13,7 @@ using System.Web;
 namespace DontPanic.Helpers.Security
 {
     [AttributeUsage(AttributeTargets.Interface)]
-    public class SSLOnly : Attribute, IServiceHelperAttribute
+    public class SSLWithWindowsAuth : Attribute, IServiceHelperAttribute
     {
         public void ConfigureService(System.ServiceModel.Description.ServiceDescription serviceDescription, System.ServiceModel.ServiceHostBase serviceHostBase)
         {
@@ -30,8 +30,7 @@ namespace DontPanic.Helpers.Security
 
                     // Use HTTPS (SSL) for communication 
                     var binding = new WS2007HttpBinding(SecurityMode.Transport);
-                    //binding.Security.Mode = SecurityMode.Transport;
-                    binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.None;               
+                    binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;                  
 
                     MaxSetter.SetMaxes(binding);
 
@@ -63,7 +62,7 @@ namespace DontPanic.Helpers.Security
 
                 // Use transport with message creds                            
                 bindingWS.Security.Mode = SecurityMode.Transport;
-                bindingWS.Security.Transport.ClientCredentialType = HttpClientCredentialType.None;
+                bindingWS.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
 
                 MaxSetter.SetMaxes(bindingWS);
             }            
@@ -73,5 +72,5 @@ namespace DontPanic.Helpers.Security
         {
             
         }
-    }
+    }    
 }

@@ -15,7 +15,7 @@ namespace IISTestHost
     [ServiceContract]
 //    [BusinessToBusiness("RawTcpClientCert1", "RawTcpServiceCert1")]
     //[PublicService]
-        [SSLOnly]
+        [SSLWithWindowsAuth]
     public interface IService1
     {
         [OperationContract]

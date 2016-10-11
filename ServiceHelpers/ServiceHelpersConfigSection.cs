@@ -223,19 +223,6 @@ namespace DontPanic.Helpers
                 this["channelFactory"] = value;
             }
         }
-
-        [ConfigurationProperty("windowsauth", IsRequired = false, DefaultValue = false)]
-        public bool WindowsAuth
-        {
-            get
-            {
-                return (bool)this["windowsauth"];
-            }
-            set
-            {
-                this["windowsauth"] = value;
-            }
-        }
     }
 
     static class ConfigHelper
