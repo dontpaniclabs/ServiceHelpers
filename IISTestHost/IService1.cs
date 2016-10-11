@@ -7,6 +7,7 @@ using System.ServiceModel.Web;
 using System.Text;
 using DontPanic.Helpers;
 using DontPanic.Helpers.Security;
+using System.ServiceModel.Activation;
 
 namespace IISTestHost
 {

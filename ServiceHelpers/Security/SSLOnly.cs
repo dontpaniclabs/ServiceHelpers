@@ -6,6 +6,9 @@ using System.ServiceModel;
 using System.ServiceModel.Description;
 using System.Net;
 using System.Net.Security;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Dispatcher;
+using System.Web;
 
 namespace DontPanic.Helpers.Security
 {
@@ -25,13 +28,10 @@ namespace DontPanic.Helpers.Security
                     // clear existing
                     host.Description.Endpoints.Clear();
 
-                    // Use HTTPS (SSL) for communication
-
-                    var binding = new WS2007HttpBinding();
-                    binding.Security.Mode = SecurityMode.Transport;
-                    binding.Security.Message.ClientCredentialType = MessageCredentialType.None;
-                    binding.Security.Message.EstablishSecurityContext = false;
-                    binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.None;
+                    // Use HTTPS (SSL) for communication 
+                    var binding = new WS2007HttpBinding(SecurityMode.Transport);
+                    //binding.Security.Mode = SecurityMode.Transport;
+                    binding.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;                  
 
                     MaxSetter.SetMaxes(binding);
 
@@ -43,29 +43,12 @@ namespace DontPanic.Helpers.Security
                         address = new EndpointAddress(new Uri(uri));
                     }
                     var endpoint = host.AddServiceEndpoint(contract.ContractType, binding, address.Uri);
-
-                    //host.Description.Behaviors.Add(new ServiceMetadataBehavior() { HttpsGetEnabled = true });
                 }
 
             }
             DisableErrorMasking.Disable(serviceHostBase);
         }
 
-        static bool _boolInited = false;
-
-        private static void IgnoreCerts()
-        {
-            if (!_boolInited)
-            {
-                _boolInited = true;
-
-                ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(
-                delegate
-                {
-                    return true;
-                });
-            }
-        }
 
         public System.ServiceModel.EndpointIdentity CreateIdentity()
         {           
@@ -74,19 +57,17 @@ namespace DontPanic.Helpers.Security
 
         public void ConfigureClientBinding(System.ServiceModel.Channels.Binding binding, Type contractType)
         {
-            //IgnoreCerts();
-
             if (binding is WS2007HttpBinding)
             {
                 var bindingWS = binding as WS2007HttpBinding;
 
-                // Use transport with message creds
+                // Use transport with message creds                            
                 bindingWS.Security.Mode = SecurityMode.Transport;
 
                 if (ServiceHelpersConfigSection.Settings.Endpoint(contractType).WindowsAuth)
                     bindingWS.Security.Transport.ClientCredentialType = HttpClientCredentialType.Windows;
                 else
-                    bindingWS.Security.Transport.ClientCredentialType = HttpClientCredentialType.None; 
+                    bindingWS.Security.Transport.ClientCredentialType = HttpClientCredentialType.None;
 
                 MaxSetter.SetMaxes(bindingWS);
             }            
@@ -95,6 +76,50 @@ namespace DontPanic.Helpers.Security
         public void ConfigureClientCredentials(System.ServiceModel.Description.ClientCredentials creds, Type contractType)
         {
             
+        }
+    }
+
+    public class SLLBehavior : IEndpointBehavior, IDispatchMessageInspector
+    {
+        public void AddBindingParameters(ServiceEndpoint endpoint, BindingParameterCollection bindingParameters)
+        {
+        }
+
+        public object AfterReceiveRequest(ref Message request, IClientChannel channel, InstanceContext instanceContext)
+        {
+            var caller = "";
+            if (ServiceSecurityContext.Current != null && ServiceSecurityContext.Current.WindowsIdentity != null)
+            {
+                // get from WCF (caller)
+                caller = ServiceSecurityContext.Current.WindowsIdentity.Name;
+            }
+            if (string.IsNullOrWhiteSpace(caller)
+                && HttpContext.Current != null
+                && HttpContext.Current.Request != null
+                && HttpContext.Current.Request.LogonUserIdentity != null)
+            {
+                // get from IIS (caller)
+                caller = HttpContext.Current.Request.LogonUserIdentity.Name;
+            }
+            return null;   
+        }
+
+        public void ApplyClientBehavior(ServiceEndpoint endpoint, ClientRuntime clientRuntime)
+        {
+        }
+
+        public void ApplyDispatchBehavior(ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher)
+        {
+            endpointDispatcher.DispatchRuntime.MessageInspectors.Add(this);
+        }
+
+        public void BeforeSendReply(ref Message reply, object correlationState)
+        {
+            
+        }
+
+        public void Validate(ServiceEndpoint endpoint)
+        {
         }
     }
 }
