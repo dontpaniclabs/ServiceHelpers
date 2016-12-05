@@ -42,3 +42,5 @@ catch (Exception ex)
 	}
 }
 ```
+
+[Presentation][https://www.codeplex.com/Download?ProjectName=dplservicehelpers&DownloadId=264081]
