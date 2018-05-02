@@ -26,7 +26,7 @@ namespace DontPanic.Helpers
         #region Mock support for easy unit testing
 
         private Dictionary<string, object> _overrides = new Dictionary<string, object>();
-        private Dictionary<string, Uri> _endpointOverride = new Dictionary<string, Uri>();
+        private Dictionary<string, ChannelUriStruct> _endpointOverride = new Dictionary<string, ChannelUriStruct>();
 
         private MockChannelWrapper<I> GetProxyOverride<I>() where I : class
         {
@@ -87,7 +87,7 @@ namespace DontPanic.Helpers
             _overrides.Clear();
         }
 
-        public virtual void AddEndpointAddressOverride<I>(Uri uri)
+        public virtual void AddEndpointAddressOverride<I>(Uri uri, string channelFactory = null)
         {
             // first we must clear the cache of anything for this proxy type.
             var key = typeof(I).FullName;
@@ -99,7 +99,7 @@ namespace DontPanic.Helpers
                     _endpointOverride.Clear();
                 }
 
-                _endpointOverride.Add(key, uri);
+                _endpointOverride.Add(key, new ChannelUriStruct() { Uri = uri, ChannelFactory = channelFactory });
             }
         }
 
@@ -369,12 +369,13 @@ namespace DontPanic.Helpers
 
             if (endpointOverrideAddress != null)
             {
-                return ConfigureEndpointFromUri<I>(new Uri(endpointOverrideAddress));
+                return ConfigureEndpointFromUri<I>(new Uri(endpointOverrideAddress), null);
             }
 
             if (_endpointOverride.ContainsKey(typeof(I).FullName))
             {
-                return ConfigureEndpointFromUri<I>(_endpointOverride[typeof(I).FullName]);
+                var endpointOverride = _endpointOverride[typeof(I).FullName];
+                return ConfigureEndpointFromUri<I>(endpointOverride.Uri, endpointOverride.ChannelFactory);
             }
 
             string configName;
@@ -483,11 +484,12 @@ namespace DontPanic.Helpers
             return result;
         }
 
-        protected virtual IChannelWrapper<I> ConfigureEndpointFromUri<I>(Uri uri)
+        protected virtual IChannelWrapper<I> ConfigureEndpointFromUri<I>(Uri uri, string channel)
             where I : class
         {
             var clientEndpoint = new ClientEndpoint();
             clientEndpoint.Address = uri.ToString();
+            clientEndpoint.ChannelFactory = channel;
 
             return ConfigureEndpointFromSetting<I>(clientEndpoint);
         }
@@ -802,4 +804,11 @@ namespace DontPanic.Helpers
         #endregion
 
     }
+
+    struct ChannelUriStruct
+    {
+        public Uri Uri { get; set; }
+        public string ChannelFactory { get; set; }
+    }
 }
+

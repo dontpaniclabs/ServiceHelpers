@@ -36,6 +36,6 @@ namespace DontPanic.Helpers
         void Call<I>(WcfCall<I> call, string endpointOverrideAddress) where I : class;
 
         // Programmatically set options for particular proxies
-        void AddEndpointAddressOverride<I>(Uri uri);
+        void AddEndpointAddressOverride<I>(Uri uri, string channelFactory = null);
     }
 }
