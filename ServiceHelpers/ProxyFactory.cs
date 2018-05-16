@@ -111,6 +111,15 @@ namespace DontPanic.Helpers
             }
         }
 
+        public virtual void ClearEndpointOverride(string endpointInterface)
+        {
+            lock(_lockObj)
+            {
+                if (_endpointOverride.ContainsKey(endpointInterface))
+                    _endpointOverride.Remove(endpointInterface);
+            }
+        }
+
         /// <summary>
         /// Call a method on a WCF proxy. 
         /// This method is used by the generated proxy.

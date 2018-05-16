@@ -21,6 +21,9 @@ namespace DontPanic.Helpers
         // Clear all proxy overrides.
         void ClearProxyOverrides();
 
+        // Clear a specific override
+        void ClearEndpointOverride(string endpointInterface);
+
         // Current best method to call a WCF method with no lambda.
         I Proxy<I>() where I : class;
 
