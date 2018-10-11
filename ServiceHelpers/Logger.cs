@@ -36,6 +36,22 @@ namespace DontPanic.Helpers
 
                     var loggerType = Type.GetType("Microsoft.Practices.EnterpriseLibrary.Logging.Logger, Microsoft.Practices.EnterpriseLibrary.Logging");
 
+                    var logWriterFactoryType = Type.GetType("Microsoft.Practices.EnterpriseLibrary.Logging.LogWriterFactory, Microsoft.Practices.EnterpriseLibrary.Logging");
+                    if (logWriterFactoryType != null)
+                    {
+                        var factory = Activator.CreateInstance(logWriterFactoryType);
+
+                        if (factory != null)
+                        {
+                            var createFactoryMethod = logWriterFactoryType.GetMethod("Create", new Type[] { });
+                            var createdFactory = createFactoryMethod.Invoke(factory, new object[] { });
+
+                            var setLogWriterMethod = loggerType.GetMethod("SetLogWriter");
+                            if (setLogWriterMethod != null && createdFactory != null)
+                                setLogWriterMethod.Invoke(null, new object[] { createdFactory, false });
+                        }
+                    }
+
                     if (loggerType != null)
                     {
                         var method = loggerType.GetMethod("Write", new Type[] { logentryType });
