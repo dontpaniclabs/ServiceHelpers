@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.40629.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{3704772E-F088-4A5A-BFE9-0D13B4BF017C}"
 EndProject
@@ -254,6 +254,9 @@ Global
 		{8474A812-D5CD-4646-892A-8A96B2638823} = {1409BDE7-5B49-4845-8FD7-590D13991E6B}
 		{3F1DBCA2-A2A3-49DA-B049-671CF5B78F97} = {1409BDE7-5B49-4845-8FD7-590D13991E6B}
 		{FFD38DF2-F42D-490F-8A89-134080437B02} = {3704772E-F088-4A5A-BFE9-0D13B4BF017C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D0E3FE23-0190-4784-A9C0-8D0997AE2BCD}
 	EndGlobalSection
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True

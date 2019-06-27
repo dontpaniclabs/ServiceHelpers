@@ -9,7 +9,7 @@ namespace DontPanic.Helpers
 {
     public static class MaxSetter
     {
-        const int tenMillion = 10000000;
+        const int tenMillion = int.MaxValue;
 
         public static void SetMaxes(Binding inputBinding)
         {
