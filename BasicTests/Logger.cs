@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DontPanic.Helpers;
-using Microsoft.Practices.EnterpriseLibrary.Logging;
 using System.Diagnostics;
 
 namespace BasicTests
@@ -76,13 +75,7 @@ namespace BasicTests
         [TestMethod]
         public void Logger_Raw()
         {
-            var logEntry = new LogEntry();
-            logEntry.Categories.Add("General");
-            logEntry.Severity = TraceEventType.Verbose;
-            logEntry.Message = "hi";
-            logEntry.TimeStamp = DateTime.Now;
-            
-            Microsoft.Practices.EnterpriseLibrary.Logging.Logger.Write(logEntry);
+           
         }
 
         class TProxyFactory : ProxyFactory
